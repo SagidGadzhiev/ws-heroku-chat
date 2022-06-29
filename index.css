@@ -50,6 +50,10 @@ ul {
 }
 
 .all-messages {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
     margin: 10px;
 }
 
