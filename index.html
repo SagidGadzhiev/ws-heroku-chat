@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+
+    <label>
+        <input id="username" type="text" placeholder="Ваше имя...">
+        <input id="text-message" type="text" placeholder="Введите сообщение...">
+        <button id="send-message" type="submit" onclick="sendHandler()">Отправить</button>
+    </label>
+
+    <ul id="messages-list"></ul>
+
+<script>
+
+    const host = location.origin.replace(/^http/, 'ws');
+    const ws = new WebSocket(host);
+    // const ws = new WebSocket('ws://localhost:5000/');
+
+    const sendHandler = () => {
+        let username = document.getElementById('username');
+        let textMessage = document.getElementById('text-message');
+
+        const messageData = {
+            id: Date.now(),
+            event: 'message',
+            username: username.value,
+            textMessage: textMessage.value
+        };
+
+        ws.send(JSON.stringify(messageData));
+        textMessage.value = '';
+    };
+
+    ws.onmessage = (event) => {
+
+        const wsMessage = JSON.parse(event.data);
+
+        let ul = document.getElementById('messages-list');
+        let li = document.createElement('li');
+
+        li.innerHTML = `${wsMessage.username}: ${wsMessage.textMessage}`;
+
+        ul.appendChild(li)
+    };
+
+</script>
+
+</body>
+</html>
