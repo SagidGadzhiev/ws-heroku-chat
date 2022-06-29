@@ -11,3 +11,76 @@ a {
 ul {
     list-style-type: none;
 }
+
+.main-form {
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+}
+
+.form-label {
+    width: 100%;
+    padding: 0 10px;
+}
+
+.label-input {
+    padding-left: 10px;
+    height: 40px;
+    width: 85%;
+    border: 1px solid #1b25c1;
+    border-radius: 5px;
+    outline: none;
+}
+
+.label-btn {
+    background-color: #1b25c1;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.6s;
+    height: 40px;
+}
+
+.label-btn:hover {
+    background-color: #000a8d;
+}
+
+.all-messages {
+    margin: 10px;
+}
+
+.li-connect {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.li-message-mi {
+    text-align: right;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.span-mi {
+    font-size: 20px;
+    background: #1b25c1;
+    padding: 5px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.li-message-friend {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.span-friend {
+    font-size: 20px;
+    background: gray;
+    padding: 5px;
+    border-radius: 5px;
+    color: #fff;
+}

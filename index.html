@@ -9,21 +9,56 @@
     <link rel="stylesheet" href="./index.css">
 </head>
 
-<body>
+<body onload="Init()">
 
-    <label>
-        <input id="username" type="text" placeholder="Ваше имя...">
-        <input id="text-message" type="text" placeholder="Введите сообщение...">
-        <button id="send-message" type="submit" onclick="sendHandler()">Отправить</button>
+<ul id="messages-list" class="all-messages"></ul>
+
+<form id="form" class="main-form">
+    <label id="login-label" class="form-label">
+        <input id="username" class="label-input" type="text" placeholder="Ваше имя...">
+        <button id="log-in" class="label-btn" onclick="login()">Войти</button>
     </label>
-
-    <ul id="messages-list"></ul>
+    <label id="message-label" class="form-label">
+        <input id="text-message" class="label-input" type="text" placeholder="Введите сообщение...">
+        <button id="send-message" class="label-btn" type="submit" onclick="sendHandler()">Отправить</button>
+    </label>
+</form>
 
 <script>
 
-    const host = location.origin.replace(/^http/, 'ws');
-    const ws = new WebSocket(host);
-    // const ws = new WebSocket('ws://localhost:5000/');
+    const user_id = Date.now();
+
+    function Init() {
+        document.getElementById('username').focus()
+    }
+
+    // const host = location.origin.replace(/^http/, 'ws');
+    // const ws = new WebSocket(host);
+    const ws = new WebSocket('ws://localhost:5000/');
+
+    document.getElementById('message-label').hidden = true;
+
+    const form = document.getElementById('form');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+    }, true);
+
+    const login = () => {
+        let username = document.getElementById('username');
+
+        const messageData = {
+            id: Date.now(),
+            event: 'connect',
+            username: username.value === '' ? 'Неизвестный пользователь' : username.value
+        };
+
+        ws.send(JSON.stringify(messageData));
+
+        document.getElementById('message-label').hidden = false;
+        document.getElementById('login-label').hidden = true;
+        document.getElementById('log-in').type = 'button';
+
+    };
 
     const sendHandler = () => {
         let username = document.getElementById('username');
@@ -31,8 +66,9 @@
 
         const messageData = {
             id: Date.now(),
+            user_id,
             event: 'message',
-            username: username.value,
+            username: username.value === '' ? 'Неизвестный пользователь' : username.value,
             textMessage: textMessage.value
         };
 
@@ -46,10 +82,28 @@
 
         let ul = document.getElementById('messages-list');
         let li = document.createElement('li');
+        let span = document.createElement('span');
 
-        li.innerHTML = `${wsMessage.username}: ${wsMessage.textMessage}`;
+        if (wsMessage.event === 'message') {
+            if (wsMessage.user_id === user_id) {
+                li.classList.add('li-message-mi')
+                span.classList.add('span-mi')
+                span.innerHTML = `${wsMessage.textMessage}`
+                li.appendChild(span)
+                // li.innerHTML = `${wsMessage.textMessage}`
+            } else {
+                li.classList.add('li-message-friend')
+                span.classList.add('span-friend')
+                span.innerHTML = `${wsMessage.username}: ${wsMessage.textMessage}`
+                li.appendChild(span)
+                // li.innerHTML = `${wsMessage.username}: ${wsMessage.textMessage}`
+            }
+        } else {
+            li.innerHTML = `Пользователь ${wsMessage.username} подключился`
+            li.classList.add('li-connect')
+        }
 
-        ul.appendChild(li)
+        ul.appendChild(li);
     };
 
 </script>
