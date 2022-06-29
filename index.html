@@ -32,9 +32,9 @@
         document.getElementById('username').focus()
     }
 
-    // const host = location.origin.replace(/^http/, 'ws');
-    // const ws = new WebSocket(host);
-    const ws = new WebSocket('ws://localhost:5000/');
+    const host = location.origin.replace(/^http/, 'ws');
+    const ws = new WebSocket(host);
+    // const ws = new WebSocket('ws://localhost:5000/');
 
     document.getElementById('message-label').hidden = true;
 
