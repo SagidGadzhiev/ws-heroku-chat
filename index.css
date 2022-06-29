@@ -84,3 +84,15 @@ ul {
     border-radius: 5px;
     color: #fff;
 }
+
+@media (max-width: 425px) {
+    .label-input {
+        width: 55%;
+    }
+    .span-mi, .span-friend {
+        font-size: 14px;
+        display: inline-block;
+        max-width: 150px;
+        word-break: break-all;
+    }
+}
